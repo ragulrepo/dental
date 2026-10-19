@@ -6,6 +6,10 @@ from sqlalchemy import pool
 from alembic import context
 from app.database.db import Base
 from app.models.users import User
+from app.models.dentists_model import Dentist
+from app.models.treatments_model import Treatment
+from app.models.appointments_model import Appointment
+from app.models.ratings_model import Rating
 from app.core.config import settings
 
 # this is the Alembic Config object, which provides

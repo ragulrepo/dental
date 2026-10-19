@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental appointment update</title>
+</head>
+<body style="margin:0; padding:24px; background:#f2f7f8; color:#24343a; font-family:Arial,sans-serif;">
+    <div style="max-width:600px; margin:0 auto; overflow:hidden; background:#ffffff; border-radius:14px; box-shadow:0 8px 24px rgba(25,65,75,0.08);">
+        <div style="padding:28px 32px; background:#087f8c; color:#ffffff; text-align:center;">
+            <div style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase;">Dental Booking</div>
+            <h1 style="margin:12px 0 0; font-size:25px;">
+                {% if confirmed %}Appointment confirmed{% else %}Appointment request received{% endif %}
+            </h1>
+        </div>
+        <div style="padding:30px 32px;">
+            <p style="margin-top:0; font-size:16px;">Hello {{ name }},</p>
+            <p style="line-height:1.6;">{{ status_message }}</p>
+
+            <div style="margin:24px 0; padding:20px; border:1px solid #dce9eb; border-radius:10px; background:#f8fbfb;">
+                <h2 style="margin:0 0 16px; color:#087f8c; font-size:18px;">Appointment details</h2>
+                <p style="margin:8px 0;"><strong>Reference:</strong> #{{ appointment_id }}</p>
+                <p style="margin:8px 0;"><strong>Treatment:</strong> {{ treatment_name }}</p>
+                <p style="margin:8px 0;"><strong>Dentist:</strong> {{ dentist_name }}</p>
+                <p style="margin:8px 0;"><strong>Date:</strong> {{ appointment_date }}</p>
+                <p style="margin:8px 0;"><strong>Time:</strong> {{ appointment_time }}</p>
+                <p style="margin:8px 0;"><strong>Status:</strong> {% if confirmed %}Confirmed{% else %}Pending dentist confirmation{% endif %}</p>
+            </div>
+
+            {% if not confirmed %}
+            <p style="line-height:1.6;">We’ll send you another email when the dentist confirms your appointment.</p>
+            {% else %}
+            <p style="line-height:1.6;">Please arrive a few minutes before your appointment. Contact the clinic if you need to make a change.</p>
+            {% endif %}
+
+            <p style="margin:28px 0 0; line-height:1.6;">Best regards,<br><strong>Dental Booking Team</strong></p>
+        </div>
+        <div style="padding:14px 24px; background:#eef5f6; color:#68777b; font-size:12px; text-align:center;">
+            This is an automated email. Please do not reply.
+        </div>
+    </div>
+</body>
+</html>
