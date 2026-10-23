@@ -14,6 +14,7 @@ from app.models.treatments_model import Treatment
 from app.models.users import User
 from app.schemas.appointment_schema import AppointmentCreate, AppointmentResponse, AppointmentStatusUpdate
 from app.services.email import send_appointment_email
+from app.services.scheduler import cancel_appointment_reminder, schedule_appointment_reminder
 
 router = APIRouter(tags=["appointments"])
 
@@ -96,6 +97,7 @@ def create_appointment(
     db.add(appointment)
     db.commit()
     db.refresh(appointment)
+    schedule_appointment_reminder(appointment.id, appointment.starts_at)
     dentist_user = db.get(User, dentist.user_id)
     send_appointment_email(
         email=current_user.email,
@@ -175,6 +177,7 @@ def cancel_appointment(
     appointment.status = AppointmentStatus.CANCELLED
     db.commit()
     db.refresh(appointment)
+    cancel_appointment_reminder(appointment.id)
     return appointment
 
 
@@ -216,7 +219,9 @@ def update_appointment_status(
     appointment.status = data.status
     db.commit()
     db.refresh(appointment)
-    if data.status == AppointmentStatus.CONFIRMED:
+    if data.status in {AppointmentStatus.REJECTED, AppointmentStatus.CANCELLED}:
+        cancel_appointment_reminder(appointment.id)
+    elif data.status == AppointmentStatus.CONFIRMED:
         dentist_user = db.get(User, dentist.user_id)
         treatment = db.get(Treatment, appointment.treatment_id)
         send_appointment_email(

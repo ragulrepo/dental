@@ -21,13 +21,7 @@ class AppointmentCreate(BaseModel):
     gender: Literal["male", "female", "trans"]
     dentist_id: int = Field(gt=0)
     treatment_id: int = Field(gt=0)
-    starts_at: datetime = Field(
-        description=(
-            "Appointment start date and time in ISO 8601 format with a timezone, "
-            "for example 2026-10-20T13:30:00+05:30. The end time is calculated "
-            "automatically from the selected treatment duration."
-        )
-    )
+    starts_at: datetime
     
     notes: str | None = Field(default=None, max_length=1000)
 
